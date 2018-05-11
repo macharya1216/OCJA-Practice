@@ -1,0 +1,28 @@
+OCJA Book Review
+
+www.selikoff.net/oca - if there are any changes to the topics on the exam after the book is published, we will note them there. 
+www.pearsonvue.com - to schedule the exam. Chose IT and Oracle. 
+http://certview.oracle.com - find out the result
+www.sybex.com/go/ocajavase8 - supplemental book materials
+https://sybextestbanks.wiley.com : mohitacharya@hotmail.com 
+
+1) B D - X
+2) C - Y
+3) C - X
+4) C -Y
+5) D - Y
+6)B - Y 
+7) B - Y 
+8) D - X
+9) B,C,E -X
+10)F A - X
+11)B - Y
+12) B -Y 
+13)C - Y 
+14)B - X
+15) A,C,D - X
+16) B,C,D,F - X
+17) A,B,C - X
+18) B,D,F -X 
+19) C- Y
+20) E - X

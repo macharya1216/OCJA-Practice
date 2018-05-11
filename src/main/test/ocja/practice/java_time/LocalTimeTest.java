@@ -3,11 +3,14 @@ package ocja.practice.java_time;
 import org.junit.Test;
 
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.FormatStyle;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.UnsupportedTemporalTypeException;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class LocalTimeTest {
@@ -15,9 +18,9 @@ public class LocalTimeTest {
     Testing the general static and
     non static methods of the LocalTime api*/
     @Test
-    public void testGeneralLocalTimeApi(){
+    public void testGeneralLocalTimeApi()   {
         LocalTime localTime = LocalTime.now();
-        assertTrue(!localTime.equals(LocalTime.now()));
+        System.out.println(localTime); // outputs : 10:11:37.254
 
         LocalTime ofLocalTime = LocalTime.of(23,59);
         assertTrue(ofLocalTime.toString().equals("23:59"));
@@ -51,7 +54,26 @@ public class LocalTimeTest {
         LocalTime compareTime2 = LocalTime.of(05,05);
         System.out.println(compareTime1.compareTo(compareTime2));
 
+        /*Example below tests how to use format method of LocalTime in real life scenarios*/
 
-    }
+        LocalTime toFormatLocalTime = LocalTime.of(11,25);
+        String formattedTime = toFormatLocalTime.format(DateTimeFormatter.ISO_TIME);
+        assertTrue(formattedTime.equals("11:25:00"));
+
+        /*Example below shows a simple usage of the parse method with a dateTime formatter*/
+
+        LocalTime parsedLocalTime = LocalTime.parse(new StringBuilder("12:46"),DateTimeFormatter.ofPattern("HH:mm"));
+        assertEquals("12:46",parsedLocalTime.toString());
+
+        LocalTime toFormatLocalTime1 = LocalTime.of(11,25);
+        boolean formatExceptionCaught = false;
+        try{
+            String  format1 = toFormatLocalTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        }catch(Exception e){
+            formatExceptionCaught = true;
+        }
+        assertTrue(formatExceptionCaught);
+
+      }
 
 }

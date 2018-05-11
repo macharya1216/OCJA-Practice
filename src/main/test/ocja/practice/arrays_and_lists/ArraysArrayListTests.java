@@ -2,11 +2,9 @@ package ocja.practice.arrays_and_lists;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ArraysArrayListTests {
@@ -21,7 +19,7 @@ public class ArraysArrayListTests {
 
         // Two arrays with same content are not equal
         String[] stringArray = new String[]{"A", "B", "C"};
-        String[] stringArrayCopy = new String[]{"A", "B", "C"};
+        String []stringArrayCopy = {"A", "B", "C"};
 
         assertTrue(!stringArray.equals(stringArrayCopy));
 
@@ -49,7 +47,7 @@ public class ArraysArrayListTests {
         assertTrue(arrList.size()==0);
 
         // We can assign int values as the elements of char array and vice versa
-        int []intArray = new int[2];
+        int intArray      [] = new int[2];
         intArray[0] = 'X';
         intArray[1] = 1;
         System.out.println(Arrays.toString(intArray));
@@ -65,7 +63,8 @@ public class ArraysArrayListTests {
         }
         assertTrue(charXFound);
 
-        char []charArray = new char[2];
+        char []charArray ;
+        charArray = new char[2];
         charArray[0] = 1;
         charArray[1] = 'X';
         System.out.println(Arrays.toString(charArray));
@@ -84,6 +83,31 @@ public class ArraysArrayListTests {
 
 
     }
+
+    /*Method tests how to sort an array and how are elements stored in the order
+    before sort
+
+    Notice how symbols sort before numbers , except underscore which sorts after
+    capital letters, and capital letters sort before small letters.
+
+    */
+    @Test
+    public void testHowToOrderArray(){
+        String str[];
+        str = new String[] {"A","D","C","b","f","g","1","3","#","_","$","@"};
+        Arrays.sort(str);
+        System.out.println(Arrays.toString(str));
+        assertEquals(Arrays.toString(str),"[#, $, 1, 3, @, A, C, D, _, b, f, g]");
+    }
+
+    @Test
+    public void testHowToBinarySearchArray(){
+
+        char[] charArray = {'X','Y','X','1','*'};
+        System.out.println(Arrays.binarySearch(charArray,'X'));
+    }
+
+
 /*
     Tests asserts that when we try to initialize an array without
     first creating then, java throws a null pointer . This test will
@@ -93,7 +117,7 @@ public class ArraysArrayListTests {
 
         int array[][] = new int[2][];
         array[0][0] = 0;
-        array[0][1] = 1;
+        //array[0][1] = 1;
 
     }
 
@@ -103,13 +127,19 @@ public class ArraysArrayListTests {
     @Test
     public void testHowToInitializeAndCreateArrayProperly(){
 
-        int array[][] = new int[2][];
-        array[0] = new int[2];
-        array[0][0] = 0;
-        array[0][1] = 1;
-        assertTrue(array.length == 2);
-        assertTrue(array[0].length == 2);
-
+        try {
+            int array[][] = new int[2][2];
+            Arrays.sort(array);
+          //  array[0] = new int[2];
+            array[0][0] = 0;
+            array[0][1] = 1;
+            array[1][0] = 2;
+            System.out.println(Arrays.deepToString(array));
+            assertTrue(array.length == 2);
+            assertTrue(array[0].length == 2);
+        }catch(Exception e){
+            System.out.println("Exception caught "+e);
+        }
     }
 
     /*
@@ -150,4 +180,62 @@ public class ArraysArrayListTests {
         assertTrue(stringArray[2] == null);
 
     }
+
+    /*Method demonstrates that if you are using a
+            raw list, you can pretty much add
+            any object to it. Also the add method
+            returns a boolean which is always true*/
+    @Test
+    public void testArrayListCapacity(){
+        int val = 0;
+        String nullString = null;
+        List strList = new ArrayList<>();
+        assertTrue(strList.add(new StringBuilder("boom")));
+        assertTrue(strList.add(1.0f));
+        strList.add(val);
+        strList.add(new char[] {'A','B'});
+        strList.add(Arrays.asList("ABC"));
+        /* Notice you can insert null to a List and it will print just fine as long as you
+        dont invoke any method on that null item in the for loop*/
+        strList.add(nullString);
+
+        for(Object obj : strList)
+            System.out.println(obj);
+        char [] charArray = (char[]) strList.remove(3);
+        assertTrue(strList.size() == 5);
+        strList.remove(null);
+        assertTrue(strList.size() == 4);
+    }
+
+
+
+    /*Notice the initial capacity of an arraylist is set to 10,
+    if you add an item with index greater than 10 on an empty list, Java
+    will throw an IndexOutOfBoundException*/
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testAddWithInvalidIndexThrowsIndexOutOfBoundException(){
+        List strList = new ArrayList<>();
+        strList.add(1,"");
+
+    }
+
+    /*
+    A list can accept null and in some scenaros also
+    output the null, but in cases where autoboxing and
+            unboxing takes place between primitives and object
+    this might be an issue, notice in the example below,
+    we are adding null to the list ages which is fine,
+    but when we are iterating the list, the items in the list
+    are automatically getting unboxed to primitive int which
+            will cause null pointer exception */
+
+    @Test(expected = NullPointerException.class)
+    public void testAutoboxingAndNullItemList(){
+        List<Integer> ages = new ArrayList<>();
+        ages.add(0);
+        ages.add(null);
+        for(int in : ages)
+            System.out.println(in);
+    }
+
 }

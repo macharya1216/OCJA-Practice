@@ -4,14 +4,18 @@ import com.sun.xml.internal.bind.v2.runtime.reflect.opt.FieldAccessor_Short;
 import org.junit.Test;
 
 import java.text.Format;
+import java.text.ParsePosition;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.DecimalStyle;
 import java.time.format.FormatStyle;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalAccessor;
 import java.time.temporal.UnsupportedTemporalTypeException;
 import java.util.Locale;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class DateTimeFormatterTest {
@@ -102,7 +106,22 @@ public class DateTimeFormatterTest {
     public void testLocalTimeParseMethodThrowsExcepWhenStringHasDate(){
 
         LocalTime lt = LocalTime.parse("2018-03-06T06:22");
-        System.out.println(lt.toString());
+    }
+
+
+    /*
+    Using the parse method of LocalTime, if we send a
+    String pattern including the Date, this will throw
+    a Date Parse Exception*/
+    @Test(expected = DateTimeParseException.class)
+    //@Test
+    public void testLocalTimeParseMethodThrowsExcepWhenStringHasDate1(){
+
+        //LocalTime lt = LocalTime.parse("2018-03-06T06:22",DateTimeFormatter.ISO_TIME);
+        DateTimeFormatter dtf = DateTimeFormatter.ISO_TIME;
+        TemporalAccessor lt  =   dtf.parse("2018-03-06T06:22", new ParsePosition(11));
+        LocalTime localTime = (LocalTime)lt;
+        System.out.println(localTime.toString());
     }
 
     /*Parse method of LocalDateTime requires the time string as well*/
@@ -129,6 +148,25 @@ public class DateTimeFormatterTest {
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-ddThh:mm");
         dtf.format(LocalTime.now());
+
+    }
+
+
+    @Test
+    public void testFormatBasicDateUsingLocalDateTime(){
+
+
+        /*When a BASIC_ISO_DATE is used on a LocalDateTime , it works*/
+
+        LocalDateTime ldt = LocalDateTime.of(2018,Month.MAY,01,01,01);
+        String formattedDate = DateTimeFormatter.BASIC_ISO_DATE.format(ldt);
+
+        assertEquals("20180501",formattedDate);
+
+        formattedDate = DateTimeFormatter.ISO_TIME.format(ldt);
+        assertEquals("01:01:00",formattedDate);
+
+
 
     }
 
